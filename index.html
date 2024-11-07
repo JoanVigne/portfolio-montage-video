@@ -5,17 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <header></header>
+    <header>
+      <a class="container-logo" href="index.html">
+        <img src="./assets/logo-jv.png" alt="Logo de Joan - Monteur vidéo" />
+      </a>
+      <h1>Joan - Monteur vidéo</h1>
+      <nav>
+        <ul>
+          <li><a href="#">Accueil</a></li>
+          <li><a href="#projets">Projets</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </header>
     <main>
       <section class="banner"></section>
-      <section class="projets">
-        <h2>Mes quatres derniers projets</h2>
+      <section class="projets" id="projets">
+        <h2>Mes quatres derniers projets pro</h2>
         <div class="video-container"></div>
-        <a href="./pages/videos.html">Tous les projets</a>
+        <a href="./pages/videos.html" class="lien-page-videos"
+          >Tous les projets</a
+        >
       </section>
+      <section class="logiciel">
+        <h2>Logiciel utilisée</h2>
+        <p>
+          version pro <br />
+          <a href="https://www.capcut.com/fr-fr/create/video-presentation"
+            >Visitez leur site</a
+          >
+        </p>
+      </section>
+      <section id="contact"><h2>Contact</h2></section>
     </main>
+    <footer>
+      <a href="./pages/mention-legal.html">Mentions légales</a>
+    </footer>
     <script src="videosinfos.js"></script>
     <script src="main.js"></script>
   </body>

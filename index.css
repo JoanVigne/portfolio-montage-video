@@ -1,0 +1,35 @@
+/* Banner */
+.banner {
+  background-image: url("https://via.placeholder.com/1920x400");
+  background-size: cover;
+  background-position: center;
+}
+
+/* logiciel section */
+.logiciel {
+  background-image: url("./assets/capcut_image.png");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.logiciel h2 {
+  color: #fff;
+  background-color: black;
+  text-shadow: 0px 4px 6px rgba(255, 255, 255, 0.4);
+}
+
+.logiciel p {
+  color: #fff;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+.logiciel a {
+  color: #fff;
+}
+
+#contact h2 {
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
