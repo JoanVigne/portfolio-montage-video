@@ -22,7 +22,12 @@
       </nav>
     </header>
     <main>
-      <section class="banner"></section>
+      <section class="banner">
+        <video autoplay muted loop playsinline>
+          <source src="./assets/videomontage.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </section>
       <section class="projets" id="projets">
         <h2>Mes quatres derniers projets pro</h2>
         <div class="video-container"></div>
@@ -40,6 +45,15 @@
         </p>
       </section>
       <section id="contact"><h2>Contact</h2></section>
+      <section id="payment">
+        <a
+          className="solo-item"
+          target="_blank"
+          href="https://buy.stripe.com/3csaHq29E89i9XyaEF"
+        >
+          <div className="item-other">Lien vers le paiement sur Stripe.</div>
+        </a>
+      </section>
     </main>
     <footer>
       <a href="./pages/mention-legal.html">Mentions légales</a>
