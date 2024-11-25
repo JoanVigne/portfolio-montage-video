@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="../index.css" />
+    <link rel="stylesheet" href="./videos.css" />
   </head>
   <body>
     <header>
@@ -22,14 +22,19 @@
       </nav>
     </header>
     <main>
-      <section class="banner"></section>
+      <section class="banner">
+        <video autoplay muted loop playsinline>
+          <source src="../assets/videomontage.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </section>
       <section class="projets" id="projets">
         <h2>Tous les projets</h2>
         <div class="video-container"></div>
       </section>
     </main>
     <footer>
-      <a href="./pages/mention-legal.html">Mentions légales</a>
+      <a href="../pages/mention-legal.html">Mentions légales</a>
     </footer>
     <script src="../videosinfos.js"></script>
     <script src="./videos-script.js"></script>

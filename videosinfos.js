@@ -49,5 +49,13 @@ const videos = {
       description:
         "Dans cette vidéo, on teste l’état de Framer AI en 2024 : est-ce que l’IA de Framer est enfin prête pour créer un site pro ? Je vous montre comment accéder à cette fonctionnalité cachée et explore 5 types de sites pour voir les résultats. Découvrez si Framer AI est à la hauteur ou si les templates Framer restent l’option idéale pour un site unique et pro ! 🚀",
     },
+    2: {
+      title: "La fusion qui va changer les animations Web (Webflow + GSAP)",
+      date: "2024-11-18",
+      link: "https://www.youtube.com/watch?v=8ZbqrZvvJ1A&t",
+      client: "Ritch Rivia",
+      description:
+        "Webflow vient d’acheter GSAP (GreenSock Animation Platform), la librairie d’animation JavaScript utilisée sur plus de 11 millions de sites pour créer des animations fluides et incroyables. 🎥 Dans cette vidéo, je vous montre :Des exemples impressionnants de sites utilisant Webflow et GSAP.Pourquoi cette acquisition est une révolution pour l’animation web.Ce que ça signifie pour l’avenir de Webflow (Webflow 3.0 peut-être ?)",
+    },
   },
 };

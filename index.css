@@ -1,21 +1,15 @@
 /* Banner */
 .banner {
-  position: relative;
-  width: 100%;
-  height: 100vh; /* Adjust the height as needed */
+  height: 100vh;
   overflow: hidden;
-  background-image: url("https://via.placeholder.com/1920x400");
+  background-image: url("./assets/montage_photo.jpg");
   background-size: cover;
   background-position: center;
 }
 .banner video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: translate(-50%, -50%);
 }
 /* logiciel section */
 .logiciel {
@@ -23,10 +17,10 @@
   background-size: cover;
   background-position: center;
   position: relative;
+  background-repeat: no-repeat;
 }
 .logiciel h2 {
   color: #fff;
-  background-color: black;
   text-shadow: 0px 4px 6px rgba(255, 255, 255, 0.4);
 }
 
@@ -39,9 +33,27 @@
   text-align: center;
 }
 .logiciel a {
-  color: #fff;
+  color: #f4f4f9;
+}
+.logiciel a:hover {
+  color: #0078ff;
 }
 
 #contact h2 {
   text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+@media screen and (max-width: 768px) {
+  .banner {
+    height: 40vh;
+  }
+  .banner video {
+    display: none;
+  }
+  #projets .video-item {
+    padding-bottom: 30px;
+  }
+  .logiciel {
+    background-position: top;
+  }
 }
