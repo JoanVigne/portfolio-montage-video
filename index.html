@@ -44,7 +44,35 @@
           >
         </p>
       </section>
-      <section id="contact"><h2>Contact</h2></section>
+      <section id="contact">
+        <form method="POST" id="form">
+          <input
+            type="hidden"
+            name="access_key"
+            value="6fa5d972-f9ff-430a-a050-3542863c82ce"
+          />
+
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+
+          <label for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+
+          <input
+            type="checkbox"
+            name="botcheck"
+            class="hidden"
+            style="display: none"
+          />
+
+          <button type="submit">Send</button>
+
+          <div id="result"></div>
+        </form>
+      </section>
       <section id="payment">
         <a
           className="solo-item"
