@@ -182,6 +182,7 @@ footer {
 /* CONTACT */
 #contact {
   background-color: #f9f9f9;
+  padding: 10px 0 50px;
 }
 form {
   display: flex;
@@ -234,7 +235,21 @@ form button:active {
   background-color: #ff4500;
   transform: scale(0.95);
 }
+/* payment  */
+#payment {
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+#payment h2 {
+  text-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+}
+#payment a img {
+  max-width: 400px;
+}
 
+footer a {
+  margin: 50px;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
   header {
