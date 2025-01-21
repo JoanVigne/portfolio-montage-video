@@ -39,6 +39,15 @@ const videos = {
       description:
         "Découvrez pourquoi cette page d'accueil explose vos conversions ! 🎯 Après avoir analysé les 100 meilleurs sites de SaaS, je vous dévoile les secrets pour optimiser votre landing page et booster vos conversions. 🚀 ",
     },
+    6: {
+      title:
+        "#volonté #will #souffrance #elevation #transformation #nietzsche #motivation  #citation #quote",
+      date: "2025-01-16",
+      link: " https://youtube.com/shorts/UpYrWHsfrNM?si=UV8zxnFVft3I80QA",
+      client: "Joan",
+      description:
+        "L'homme supérieur se distingue non seulement par sa force de volonté, mais aussi par sa capacité à accepter la souffrance comme un moyen d’élévation et de transformation. Friedrich Nietzsche",
+    },
   },
   youtube: {
     1: {
@@ -56,6 +65,14 @@ const videos = {
       client: "Ritch Rivia",
       description:
         "Webflow vient d’acheter GSAP (GreenSock Animation Platform), la librairie d’animation JavaScript utilisée sur plus de 11 millions de sites pour créer des animations fluides et incroyables. 🎥 Dans cette vidéo, je vous montre :Des exemples impressionnants de sites utilisant Webflow et GSAP.Pourquoi cette acquisition est une révolution pour l’animation web.Ce que ça signifie pour l’avenir de Webflow (Webflow 3.0 peut-être ?)",
+    },
+    3: {
+      title: "Les Meilleurs Templates Webflow GRATUITS pour votre Site Web",
+      date: "2024-12-11",
+      link: "https://www.youtube.com/watch?v=30g2nFEYRzQ",
+      client: "Ritch Rivia",
+      description:
+        "Vous voulez créer un site magnifique avec Webflow sans dépenser un centime ? Découvrez dans cette vidéo les meilleurs templates gratuits disponibles pour vos projets. Que vous travailliez sur un site personnel, un portfolio, ou une page d’entreprise, ces designs professionnels et modernes vous aideront à démarrer rapidement.",
     },
   },
 };

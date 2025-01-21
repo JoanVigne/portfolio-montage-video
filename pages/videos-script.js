@@ -1,6 +1,9 @@
-function displayLastFourVideos() {
-  const videoContainer = document.querySelector(".video-container");
-  videoContainer.innerHTML = ""; // Clear existing content
+function displayVideos() {
+  const youtubeContainer = document.querySelector(".youtube-videos");
+  const shortsContainer = document.querySelector(".shorts-videos");
+
+  youtubeContainer.innerHTML = ""; // Clear existing content
+  shortsContainer.innerHTML = ""; // Clear existing content
 
   // Flatten the videos object into an array
   const allVideos = [];
@@ -15,6 +18,7 @@ function displayLastFourVideos() {
   // Sort the videos by date in descending order
   allVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
 
+  // Display the videos in their respective containers
   allVideos.forEach((video) => {
     const videoItem = document.createElement("div");
     videoItem.classList.add("video-item");
@@ -52,20 +56,9 @@ function displayLastFourVideos() {
       videoItem.appendChild(thumbnailImage);
       videoItem.appendChild(videoLinkElement);
 
-      // Add click event to load the video in a modal
+      // Add click event to load the video
       thumbnailImage.addEventListener("click", function (event) {
         event.preventDefault();
-
-        // Create modal overlay
-        const modalOverlay = document.createElement("div");
-        modalOverlay.classList.add("modal-overlay");
-        modalOverlay.addEventListener("click", function () {
-          document.body.removeChild(modalOverlay);
-        });
-        // Create modal content
-        const modalContent = document.createElement("div");
-        modalContent.classList.add("modal-content");
-
         const iframe = document.createElement("iframe");
         iframe.src = `https://www.youtube.com/embed/${extractedVideoId}?autoplay=1`;
         iframe.width = "560";
@@ -74,43 +67,20 @@ function displayLastFourVideos() {
         iframe.allow =
           "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
         iframe.allowFullscreen = true;
-        // Add class based on video type
-        if (video.link.includes("short")) {
-          iframe.classList.add("short");
-        } else {
-          iframe.classList.add("youtube");
-        }
-        // Create and add the "Close" button
-        const closeButton = document.createElement("button");
-        closeButton.textContent = "Close";
-        closeButton.classList.add("close-button");
 
-        // Add click event to the "Close" button to close the modal
-        closeButton.addEventListener("click", function () {
-          document.body.removeChild(modalOverlay);
-        });
-
-        modalContent.appendChild(iframe);
-        modalContent.appendChild(closeButton);
-        modalOverlay.appendChild(modalContent);
-        document.body.appendChild(modalOverlay);
-        document.addEventListener("keydown", handleKeyDown);
-        function handleKeyDown(event) {
-          if (event.key === "Escape") {
-            if (!modalOverlay) {
-              console.log("no modal here");
-            } else {
-              document.body.removeChild(modalOverlay);
-              document.removeEventListener("keydown", handleKeyDown);
-            }
-          }
-        }
+        videoItem.innerHTML = "";
+        videoItem.appendChild(iframe);
       });
     }
 
-    videoContainer.appendChild(videoItem);
+    // Append the video item to the respective container
+    if (video.type === "youtube") {
+      youtubeContainer.appendChild(videoItem);
+    } else if (video.type === "shorts") {
+      shortsContainer.appendChild(videoItem);
+    }
   });
 }
 
-// Call the new function to display the 4 most recent videos
-displayLastFourVideos();
+// Call the function to display the videos
+displayVideos();
