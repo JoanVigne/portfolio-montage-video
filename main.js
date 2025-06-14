@@ -1,240 +1,163 @@
-function displayLastFourVideos() {
-  const videoContainer = document.querySelector(".video-container");
-  videoContainer.innerHTML = ""; // Clear existing content
+// Configuration des plateformes supportées
+const PLATFORMS = {
+  youtube: {
+    pattern: /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/,
+    getThumbnail: (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
+    hasModal: true,
+  },
+  "youtube-short": {
+    pattern: /(?:https?:\/\/)?(?:www\.)?youtube\.com\/shorts\/([^?&]+)/,
+    getThumbnail: (id) => `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
+    hasModal: true,
+  },
+  instagram: {
+    pattern: /(?:https?:\/\/)?(?:www\.)?instagram\.com\/reel\/([^/?&]+)/,
+    getThumbnail: () => "assets/insta.png",
+    hasModal: false,
+  },
+};
 
-  // Flatten the videos object into an array
+// Utilitaire pour extraire les informations vidéo
+function extractVideoInfo(videoLink) {
+  for (const [platformName, config] of Object.entries(PLATFORMS)) {
+    const match = videoLink.match(config.pattern);
+    if (match) {
+      return {
+        id: match[1],
+        platform: platformName,
+        thumbnailUrl: config.getThumbnail(match[1]),
+        hasModal: config.hasModal,
+      };
+    }
+  }
+  return null;
+}
+
+// Utilitaire pour obtenir tous les vidéos triés par date
+function getAllVideosSorted() {
   const allVideos = [];
   for (const videoType in videos) {
     for (const videoId in videos[videoType]) {
-      // Add the videoType to each video object
-      const video = { ...videos[videoType][videoId], type: videoType };
-      allVideos.push(video);
+      allVideos.push({ ...videos[videoType][videoId], type: videoType });
     }
   }
+  return allVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
+}
 
-  // Sort the videos by date in descending order
-  allVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
+// Création du modal pour YouTube
+function createModal(videoId, platform) {
+  const modalOverlay = document.createElement("div");
+  modalOverlay.classList.add("modal-overlay");
 
-  // Select the 4 most recent videos
-  const recentVideos = allVideos.slice(0, 4);
+  const modalContent = document.createElement("div");
+  modalContent.classList.add("modal-content");
 
-  // Display the 4 most recent videos
-  recentVideos.forEach((video) => {
-    const videoItem = document.createElement("div");
-    videoItem.classList.add("video-item");
+  const iframe = document.createElement("iframe");
+  iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+  iframe.width = "560";
+  iframe.height = "315";
+  iframe.frameBorder = "0";
+  iframe.allow =
+    "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+  iframe.allowFullscreen = true;
+  iframe.classList.add(platform === "youtube-short" ? "short" : "youtube");
 
-    const videoLink = video.link;
-    const videoTitle = video.title;
+  const closeButton = document.createElement("button");
+  closeButton.textContent = "Close";
+  closeButton.classList.add("close-button");
 
-    // Extract YouTube video ID from the link
-    let extractedVideoId = null;
-    if (videoLink.includes("youtube.com/watch")) {
-      const videoIdMatch = videoLink.match(
-        /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/
-      );
-      extractedVideoId = videoIdMatch ? videoIdMatch[1] : null;
-    } else if (videoLink.includes("youtube.com/shorts")) {
-      const videoIdMatch = videoLink.match(
-        /(?:https?:\/\/)?(?:www\.)?youtube\.com\/shorts\/([^?&]+)/
-      );
-      extractedVideoId = videoIdMatch ? videoIdMatch[1] : null;
+  modalContent.appendChild(iframe);
+  modalContent.appendChild(closeButton);
+  modalOverlay.appendChild(modalContent);
+
+  // Gestionnaires d'événements pour fermer le modal
+  const closeModal = () => {
+    if (document.body.contains(modalOverlay)) {
+      document.body.removeChild(modalOverlay);
+      document.removeEventListener("keydown", handleKeyDown);
     }
+  };
 
-    if (extractedVideoId) {
-      const thumbnailUrl = `https://img.youtube.com/vi/${extractedVideoId}/hqdefault.jpg`;
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") closeModal();
+  };
 
-      const thumbnailImage = document.createElement("img");
-      thumbnailImage.src = thumbnailUrl;
-      thumbnailImage.alt = videoTitle;
-      thumbnailImage.classList.add("video-thumbnail");
+  modalOverlay.addEventListener("click", closeModal);
+  closeButton.addEventListener("click", closeModal);
+  document.addEventListener("keydown", handleKeyDown);
 
-      const videoLinkElement = document.createElement("a");
-      videoLinkElement.href = videoLink;
-      videoLinkElement.textContent = videoTitle;
-      videoLinkElement.classList.add("video-link");
+  document.body.appendChild(modalOverlay);
+}
 
-      videoItem.appendChild(thumbnailImage);
-      videoItem.appendChild(videoLinkElement);
+// Création d'un élément vidéo
+function createVideoItem(video) {
+  const videoItem = document.createElement("div");
+  videoItem.classList.add("video-item");
 
-      // Add click event to load the video in a modal
-      thumbnailImage.addEventListener("click", function (event) {
-        event.preventDefault();
+  const videoInfo = extractVideoInfo(video.link);
+  if (!videoInfo) return videoItem;
 
-        // Create modal overlay
-        const modalOverlay = document.createElement("div");
-        modalOverlay.classList.add("modal-overlay");
-        modalOverlay.addEventListener("click", function () {
-          document.body.removeChild(modalOverlay);
-        });
-        // Create modal content
-        const modalContent = document.createElement("div");
-        modalContent.classList.add("modal-content");
+  const { id, platform, thumbnailUrl, hasModal } = videoInfo;
 
-        const iframe = document.createElement("iframe");
-        iframe.src = `https://www.youtube.com/embed/${extractedVideoId}?autoplay=1`;
-        iframe.width = "560";
-        iframe.height = "315";
-        iframe.frameBorder = "0";
-        iframe.allow =
-          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        iframe.allowFullscreen = true;
-        // Add class based on video type
-        if (video.link.includes("short")) {
-          iframe.classList.add("short");
-        } else {
-          iframe.classList.add("youtube");
-        }
-        // Create and add the "Close" button
-        const closeButton = document.createElement("button");
-        closeButton.textContent = "Close";
-        closeButton.classList.add("close-button");
+  // Création de la miniature
+  const thumbnailImage = document.createElement("img");
+  thumbnailImage.src = thumbnailUrl;
+  thumbnailImage.alt = video.title;
+  thumbnailImage.classList.add("video-thumbnail");
 
-        // Add click event to the "Close" button to close the modal
-        closeButton.addEventListener("click", function () {
-          document.body.removeChild(modalOverlay);
-        });
+  if (hasModal) {
+    // Pour YouTube: modal au clic
+    thumbnailImage.addEventListener("click", (event) => {
+      event.preventDefault();
+      createModal(id, platform);
+    });
+    videoItem.appendChild(thumbnailImage);
+  } else {
+    // Pour Instagram: lien direct
+    const thumbnailLink = document.createElement("a");
+    thumbnailLink.href = video.link;
+    thumbnailLink.target = "_blank";
+    thumbnailImage.alt = "";
+    thumbnailLink.rel = "noopener noreferrer";
+    thumbnailLink.appendChild(thumbnailImage);
+    videoItem.appendChild(thumbnailLink);
+  }
 
-        modalContent.appendChild(iframe);
-        modalContent.appendChild(closeButton);
-        modalOverlay.appendChild(modalContent);
-        document.body.appendChild(modalOverlay);
-        document.addEventListener("keydown", handleKeyDown);
-        function handleKeyDown(event) {
-          if (event.key === "Escape") {
-            if (!modalOverlay) {
-              console.log("no modal here");
-            } else {
-              document.body.removeChild(modalOverlay);
-              document.removeEventListener("keydown", handleKeyDown);
-            }
-          }
-        }
-      });
-    }
+  // Création du lien titre
+  const videoLinkElement = document.createElement("a");
+  videoLinkElement.href = video.link;
+  videoLinkElement.textContent = video.title;
+  videoLinkElement.classList.add("video-link");
+  videoLinkElement.target = "_blank";
+  videoLinkElement.rel = "noopener noreferrer";
 
-    videoContainer.appendChild(videoItem);
+  videoItem.appendChild(videoLinkElement);
+  return videoItem;
+}
+
+// Fonction générique pour afficher des vidéos
+function displayVideos(containerSelector, startIndex, count) {
+  const container = document.querySelector(containerSelector);
+  container.innerHTML = "";
+
+  const allVideos = getAllVideosSorted();
+  const videosToShow = allVideos.slice(startIndex, startIndex + count);
+
+  videosToShow.forEach((video) => {
+    const videoItem = createVideoItem(video);
+    container.appendChild(videoItem);
   });
+}
+
+// Fonctions principales simplifiées
+function displayLastFourVideos() {
+  displayVideos(".video-container", 0, 4);
 }
 
 function displayOtherFourVideos() {
-  const otherVideosContainer = document.querySelector(".other-videos");
-
-  otherVideosContainer.innerHTML = ""; // Clear existing content
-
-  // Flatten the videos object into an array
-  const allVideos = [];
-  for (const videoType in videos) {
-    for (const videoId in videos[videoType]) {
-      // Add the videoType to each video object
-      const video = { ...videos[videoType][videoId], type: videoType };
-      allVideos.push(video);
-    }
-  }
-
-  // Sort the videos by date in descending order
-  allVideos.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-  // Select the next 4 videos after the most recent 4
-  const otherVideos = allVideos.slice(4, 8);
-
-  // Display the next 4 videos
-  otherVideos.forEach((video) => {
-    const videoItem = document.createElement("div");
-    videoItem.classList.add("video-item");
-
-    const videoLink = video.link;
-    const videoTitle = video.title;
-
-    // Extract YouTube video ID from the link
-    let extractedVideoId = null;
-    if (videoLink.includes("youtube.com/watch")) {
-      const videoIdMatch = videoLink.match(
-        /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/
-      );
-      extractedVideoId = videoIdMatch ? videoIdMatch[1] : null;
-    } else if (videoLink.includes("youtube.com/shorts")) {
-      const videoIdMatch = videoLink.match(
-        /(?:https?:\/\/)?(?:www\.)?youtube\.com\/shorts\/([^?&]+)/
-      );
-      extractedVideoId = videoIdMatch ? videoIdMatch[1] : null;
-    }
-
-    if (extractedVideoId) {
-      const thumbnailUrl = `https://img.youtube.com/vi/${extractedVideoId}/hqdefault.jpg`;
-
-      const thumbnailImage = document.createElement("img");
-      thumbnailImage.src = thumbnailUrl;
-      thumbnailImage.alt = videoTitle;
-      thumbnailImage.classList.add("video-thumbnail");
-
-      const videoLinkElement = document.createElement("a");
-      videoLinkElement.href = videoLink;
-      videoLinkElement.textContent = videoTitle;
-      videoLinkElement.classList.add("video-link");
-
-      videoItem.appendChild(thumbnailImage);
-      videoItem.appendChild(videoLinkElement);
-
-      // Add click event to load the video in a modal
-      thumbnailImage.addEventListener("click", function (event) {
-        event.preventDefault();
-
-        // Create modal overlay
-        const modalOverlay = document.createElement("div");
-        modalOverlay.classList.add("modal-overlay");
-        modalOverlay.addEventListener("click", function () {
-          document.body.removeChild(modalOverlay);
-        });
-        // Create modal content
-        const modalContent = document.createElement("div");
-        modalContent.classList.add("modal-content");
-
-        const iframe = document.createElement("iframe");
-        iframe.src = `https://www.youtube.com/embed/${extractedVideoId}?autoplay=1`;
-        iframe.width = "560";
-        iframe.height = "315";
-        iframe.frameBorder = "0";
-        iframe.allow =
-          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        iframe.allowFullscreen = true;
-        // Add class based on video type
-        if (video.link.includes("short")) {
-          iframe.classList.add("short");
-        } else {
-          iframe.classList.add("youtube");
-        }
-        // Create and add the "Close" button
-        const closeButton = document.createElement("button");
-        closeButton.textContent = "Close";
-        closeButton.classList.add("close-button");
-
-        // Add click event to the "Close" button to close the modal
-        closeButton.addEventListener("click", function () {
-          document.body.removeChild(modalOverlay);
-        });
-
-        modalContent.appendChild(iframe);
-        modalContent.appendChild(closeButton);
-        modalOverlay.appendChild(modalContent);
-        document.body.appendChild(modalOverlay);
-        document.addEventListener("keydown", handleKeyDown);
-        function handleKeyDown(event) {
-          if (event.key === "Escape") {
-            if (!modalOverlay) {
-              console.log("no modal here");
-            } else {
-              document.body.removeChild(modalOverlay);
-              document.removeEventListener("keydown", handleKeyDown);
-            }
-          }
-        }
-      });
-    }
-
-    // Append the video item to the other videos container
-    otherVideosContainer.appendChild(videoItem);
-  });
+  displayVideos(".other-videos", 4, 4);
 }
-// Call the new functions
+
+// Appel des fonctions
 displayLastFourVideos();
 displayOtherFourVideos();

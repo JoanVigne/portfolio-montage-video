@@ -12,6 +12,15 @@
   object-fit: cover;
 }
 
+/* REEL INSTA */
+.video-item a img {
+  height: 150px;
+  object-fit: contain;
+  background-image: url("../assets/insta.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 @media screen and (max-width: 768px) {
   .banner {
     height: 40vh;

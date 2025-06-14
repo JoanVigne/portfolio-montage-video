@@ -135,6 +135,11 @@ footer a:after {
   content: none; /* Remove the pseudo-element */
 }
 
+/* REEL INSTA */
+.video-item a img {
+  height: 150px;
+  object-fit: contain;
+}
 /* ANIMATION LINK */
 a {
   color: #2f56b0;
