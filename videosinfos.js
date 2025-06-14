@@ -48,6 +48,13 @@ const videos = {
       description:
         "L'homme supérieur se distingue non seulement par sa force de volonté, mais aussi par sa capacité à accepter la souffrance comme un moyen d’élévation et de transformation. Friedrich Nietzsche",
     },
+    7: {
+      title: "Room GPT Message Exchange in rythm",
+      date: "2025-05-25",
+      link: "https://www.instagram.com/reel/DKHOAFZx4fD/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==",
+      client: "Room GPT",
+      description: "Epic and easy room transformation 🔥",
+    },
   },
   youtube: {
     1: {
