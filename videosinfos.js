@@ -55,6 +55,14 @@ const videos = {
       client: "Room GPT",
       description: "Epic and easy room transformation 🔥",
     },
+    8: {
+      title: "Sumo Beach!",
+      date: "2025-08-25",
+      link: "https://www.instagram.com/reel/DN55kr1DJD5/?igsh=MmNrZXo4ZW04NHF1",
+      client: "Fédération portuguese de Sumo",
+      description:
+        "Treino Sumo de praia #beachsumo #sumo #相撲 #portugal Imagens por @bysav.mm",
+    },
   },
   youtube: {
     1: {
